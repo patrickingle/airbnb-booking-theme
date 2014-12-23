@@ -11,7 +11,7 @@ function check_availability() {
 		error_reporting(-1);
 
 		require_once dirname(__FILE__) . '/api/AirBNB/AirBNBAutoload.php';
-		
+
 		$_apikey = get_option('myapi_key');
 		$_listing_id = get_option('airbnb_listing_id');
 
@@ -23,7 +23,7 @@ function check_availability() {
 		    $availability = $airBNBServiceGet_calendar->getLastError();
 
     	$calendar = json_decode( $availability );
-  
+
   		$available = 'U';
 		$price = 0;
 		foreach($calendar->calendar->dates as $date) {
@@ -37,7 +37,7 @@ function check_availability() {
 		}
 		$response = array('available' => $available, 'price' => $price);
     	echo json_encode($response);
-    	
+
     	exit();
 
 }
@@ -46,9 +46,9 @@ add_action( 'wp_ajax_check_availability', 'check_availability' );
 add_action( 'wp_ajax_nopriv_check_availability', 'check_availability' );
 
 function airbnb_setup_theme_admin_menus() {
-	add_submenu_page('themes.php', 
-        'AirBNB', 'AirBNB Settings', 'manage_options', 
-        'airbnb', 'theme_airbnb_settings'); 	
+	add_submenu_page('themes.php',
+        'AirBNB', 'AirBNB Settings', 'manage_options',
+        'airbnb', 'theme_airbnb_settings');
 }
 
 function theme_airbnb_settings() {
@@ -61,21 +61,30 @@ function theme_airbnb_settings() {
 	    // Do the saving
 	    $airbnb_listing_id = esc_attr($_POST['airbnb_listing_id']);
 	    update_option('airbnb_listing_id',$airbnb_listing_id);
-	    
+
 	    $myapi_key = esc_attr($_POST['myapi_key']);
 	    update_option('myapi_key',$myapi_key);
-	    
+
 	    $maximum_guests = esc_attr($_POST['maximum_guests']);
 	    update_option('maximum_guests',$maximum_guests);
-	    
+
 	    $paypal_email = esc_attr($_POST['paypal_email']);
 	    update_option('paypal_email',$paypal_email);
+
+	    if (isset(esc_attr($_POST['airbnb']))) {
+	    	update_option('api_switcher','airbnb');
+	    } elseif (isset(esc_attr($_POST['nineflats']))) {
+	    	update_option('api_switcher','nineflats');
+	    } else {
+	    	update_option('api_switcher','none');
+	    }
 	}
-	
+
 	$airbnb_listing_id = get_option('airbnb_listing_id');
 	$myapi_key = get_option('myapi_key');
 	$maximum_guests = get_option('maximum_guests');
 	$paypal_email = get_option('paypal_email');
+	$api_switcher = get_option('api_switcher');
 ?>
 	<div class="wrap">
 		<form method="POST" action="">
@@ -83,7 +92,15 @@ function theme_airbnb_settings() {
 			<table>
 				<tr>
 					<td>
-						<label for="myapi_key">API Key</label>
+						<label for="api_switcher">API Switcher</label>
+					</td>
+					<td>
+						<input type="radio" name="airbnb">AirBNB&nbsp;<input type="radio" name="nineflats">9flats.com
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="myapi_key">AirBNB API Key</label>
 					</td>
 					<td>
 						<input type="text" name="myapi_key" id="myapi_key" value="<?php echo $myapi_key;?>">Get you API key by pressing
@@ -97,10 +114,34 @@ function theme_airbnb_settings() {
 				</tr>
 				<tr>
 					<td>
-						<label for="airbnb_listing_id">Listing ID</label>
+						<label for="airbnb_listing_id">AirBNB Listing ID</label>
 					</td>
 					<td>
 						<input type="text" name="airbnb_listing_id" id="airbnb_listing_id" value="<?php echo $airbnb_listing_id;?>">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="nineflats_client_id">9Flats Client ID</label>
+					</td>
+					<td>
+						<input type="text" name="nineflats_client_id" id="nineflats_client_id" value="">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="nineflats_listing_name">9Flats Listing Name</label>
+					</td>
+					<td>
+						<input type="text" name="nineflats_listing_name" id="nineflats_listing_name" value="">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label for="nineflats_currency">9Flats Currency</label>
+					</td>
+					<td>
+						<input type="text" name="nineflats_currency" id="nineflats_currency" value="">
 					</td>
 				</tr>
 				<tr>
