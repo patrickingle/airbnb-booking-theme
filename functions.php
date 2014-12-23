@@ -85,6 +85,12 @@ function theme_airbnb_settings() {
 	$maximum_guests = get_option('maximum_guests');
 	$paypal_email = get_option('paypal_email');
 	$api_switcher = get_option('api_switcher');
+
+	/*
+https://api.9flats.com/api/v4/places/167623-apartment-new_york_city-roosevelt_is/availability?start_date=2015-06-01&end_date=2015-06-10&client_id=Zc40Hm5LSe76ZxKF7DwEvqkyoEGbCBGMLureDPgr
+
+https://api.9flats.com/api/v4/places/167623-apartment-new_york_city-roosevelt_is/trip_price?currency=EUR&start_date=2014-06-01&end_date=2014-06-10&number_of_guests=2&client_id=Zc40Hm5LSe76ZxKF7DwEvqkyoEGbCBGMLureDPgr
+	*/
 ?>
 	<div class="wrap">
 		<form method="POST" action="">
