@@ -2,8 +2,13 @@
 Theme Name:     AirBNB Booking
 Description:    Setup your AirBNB listing to show on your own server and accept booking requests
 Author:         PHK Corporation
+Author URI:		http://phkcorp.com
 Version:        1.0.0
 Text Domain:	airbnb
+License:		MIT
+License URI:	http://opensource.org/licenses/MIT
+Theme URI:		https://github.com/patrickingle/airbnb-booking-theme
+Tags:			custom-background, custom-header
 */
 
 
@@ -17,4 +22,36 @@ html {
 
 body {
   	background: transparent !important;
+}
+
+.wp-caption {
+	
+}
+
+.wp-caption-text {
+	
+}
+
+.sticky {
+	
+}
+
+.gallery-caption {
+	
+}
+
+.bypostauthor {
+	
+}
+
+.alignright {
+	
+}
+
+.aligncenter {
+	
+}
+
+.alignleft {
+	
 }

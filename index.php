@@ -41,7 +41,7 @@
 	<div class="span12">
 		<div class="spinner" style="display:none;">
 			<center>
-				<img src="<?php bloginfo('template_directory'); ?>/images/spiffygif_164x164.gif">
+				<img src="<?php echo esc_url( get_template_directory_uri() ); ?>/images/spiffygif_164x164.gif">
 			</center>
 		</div>		
 	</div>

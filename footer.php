@@ -2,15 +2,34 @@
 
 	</div><!-- #page -->
 
-    	<script src="<?php echo site_url(); ?>/wp-includes/js/jquery/jquery.js"></script>
-    	<script src="<?php echo site_url(); ?>/wp-includes/js/jquery/ui/jquery.ui.core.min.js"></script>
-    	<script src="<?php echo site_url(); ?>/wp-includes/js/jquery/ui/jquery.ui.datepicker.min.js"></script>
-    	<script src="<?php echo site_url(); ?>/wp-includes/js/jquery/ui/jquery.ui.dialog.min.js"></script>
-
-    	<script src="<?php bloginfo('template_directory'); ?>/bootstrap/js/bootstrap.min.js"></script>
+	<div id="dialog-1" title="<?php echo get_bloginfo('name'); ?>" style="display:none;"></div>
+	<div id="dialog-2" title="<?php echo get_bloginfo('name'); ?>" style="display:none;"></div>
 
 		<script type="text/javascript">
 		jQuery(document).ready(function($){
+ 			$( "#dialog-1" ).dialog({
+               autoOpen: false, 
+               buttons: {
+                  OK: function() {
+                  	$(this).dialog("close");
+					$('.paypalform').submit();
+                  },
+                  CANCEL: function() {
+                  	$(this).dialog("close");
+				  }
+               }, 
+               width: 600,
+            });	
+ 			$( "#dialog-2" ).dialog({
+               autoOpen: false, 
+               buttons: {
+                  OK: function() {
+                  	$(this).dialog("close");
+                  }
+               }, 
+               width: 600,
+            });	
+            /*		
 			$('#validate').click(function(){
 				var ajaxurl = '<?php echo admin_url('admin-ajax.php'); ?>';
 				
@@ -37,6 +56,7 @@
 					}
 				});
 			});
+			*/
 			$('#checkindate').datepicker({  
             	inline: true,  
             	showOtherMonths: true,  
@@ -75,16 +95,23 @@
 						console.log("Available: " + available);
 						console.log("Price: " + price);
 						if (available == '1') {
-							if (confirm("The acommodation is available, would you like to book it?") == true) {
-			
+							var booking_info = "<table><tr><td>Check-in:</td><td>" + checkin + "</td></tr><tr><td>Check-out:</td><td>" + checkout + "</td></tr><tr><td>Number of guests:</td><td>" + guests + "</td></tr><tr><td>Price:</td><td>" + price + "</td></tr></table>";
 							$('input[name="item_name"]').val("Booking for " + blog_name + " from " + checkin + " to " + checkout + " for " + guests + " guest(s).");
 							$('input[name="amount"]').val(price);
-							$('.paypalform').submit();
-     						return false;			
 
-							} 						
+							$('#dialog-1').html('The acommodation is available, would you like to book it?<br/>' + booking_info);
+							$('#dialog-1').dialog('open');
+							//if (confirm("The acommodation is available, would you like to book it?") == true) {
+			
+							//$('input[name="item_name"]').val("Booking for " + blog_name + " from " + checkin + " to " + checkout + " for " + guests + " guest(s).");
+							//$('input[name="amount"]').val(price);
+							//$('.paypalform').submit();
+     						//return false;			
+
+							//} 						
 						} else {
-							alert("Sorry, the studio is not available. Please try different dates");
+							$('#dialog-2').html("Sorry, the studio is not available. Please try different dates");
+							$('#dialog-2').dialog('open');
 						}
 					},
 					failure: function(error) {
@@ -95,5 +122,6 @@
         	});
 		});
 		</script>
+		<?php wp_footer(); ?>
 	</body>
 </html>
